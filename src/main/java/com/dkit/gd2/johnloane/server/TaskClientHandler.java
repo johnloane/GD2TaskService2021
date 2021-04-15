@@ -1,11 +1,13 @@
 package com.dkit.gd2.johnloane.server;
 
+import com.dkit.gd2.johnloane.core.Task;
 import com.dkit.gd2.johnloane.core.TaskDatabase;
 import com.dkit.gd2.johnloane.core.TaskService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Scanner;
 
 public class TaskClientHandler implements Runnable
@@ -59,18 +61,73 @@ public class TaskClientHandler implements Runnable
                     case TaskService.EXIT_COMMAND:
                         response = TaskService.SIGN_OFF;
                         sessionActive = false;
+                        break;
                 }
                 if(response != null)
                 {
                     clientOutput.println(response);
                 }
             }
-
-
+            clientSocket.close();
         }
         catch (IOException e)
         {
-            //e.printStackTrace();
+            System.out.println("Problem setting up communication channels " + e.getMessage());
         }
+    }
+
+    //remove%%Get outside
+    private String generateRemoveResponse(String[] components)
+    {
+        String response = null;
+        if(components.length == 2)
+        {
+            String taskName = components[1];
+            Task taskToBeRemoved = new Task(taskName);
+            //This relies on the equals method in the Task class
+            boolean removed = taskList.remove(taskToBeRemoved);
+            if(removed)
+            {
+                response = TaskService.SUCCESSFUL_REMOVE;
+            }
+            else
+            {
+                response = TaskService.FAILED_REMOVE;
+            }
+        }
+        return response;
+    }
+
+    //add%%Get outside%%John%%1234545667
+    //There are two possible responses -> Success or fail
+    private String generateAddResponse(String[] components)
+    {
+        String response = null;
+        if(components.length == 4)
+        {
+            try
+            {
+                String taskName = components[1];
+                String taskOwner = components[2];
+                long deadline = Long.parseLong(components[3]);
+
+                Task newTask = new Task(taskName, taskOwner, new Date(deadline));
+                boolean added = taskList.add(newTask);
+                if(added)
+                {
+                    response = TaskService.SUCCESSFUL_ADD;
+                }
+                else
+                {
+                    response = TaskService.FAILED_ADD;
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                response = TaskService.FAILED_ADD;
+                System.out.println(e.getMessage());
+            }
+        }
+        return response;
     }
 }
