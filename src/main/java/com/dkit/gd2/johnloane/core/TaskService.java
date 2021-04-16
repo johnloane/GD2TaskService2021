@@ -24,6 +24,8 @@ public class TaskService
     public static final String EXIT_COMMAND = "exit";
     public static final String SIGN_OFF = "GOODBYE";
 
+    public static final String TRYING_TO_HACK = "STOP TRYING TO HACK US";
+
     //Finish correcting ca5 del one, John, 88888888888
     //Read masters thesis, John, 999999999999
     //Finish correcting ca5 del one%%John%%8888888888##Read masters thesis%%John%%9999999999

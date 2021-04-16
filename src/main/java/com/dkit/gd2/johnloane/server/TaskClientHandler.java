@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class TaskClientHandler implements Runnable
@@ -41,7 +42,9 @@ public class TaskClientHandler implements Runnable
                 //Protocol logic
                 //Note the line below is blocking - program execution waits here
                 //until we get a request
+                System.out.println("Waiting for client input");
                 String request = clientInput.nextLine();
+                System.out.println("Got input " + request);
                 //The request will look like add%%New Task%%John%%67789897989
                 //                           remove%%New Task
                 //                           viewAll
@@ -62,6 +65,8 @@ public class TaskClientHandler implements Runnable
                         response = TaskService.SIGN_OFF;
                         sessionActive = false;
                         break;
+                    default:
+                        response = TaskService.TRYING_TO_HACK;
                 }
                 if(response != null)
                 {
@@ -74,6 +79,22 @@ public class TaskClientHandler implements Runnable
         {
             System.out.println("Problem setting up communication channels " + e.getMessage());
         }
+    }
+
+    private String generateViewAllResponse(String[] components)
+    {
+        //Take the list of tasks in the database, flatten to a String and send to Client
+        String response = null;
+        if(components.length == 1)
+        {
+            List<Task> tasks = taskList.getAllTasks();
+            response = TaskService.flattenTaskList(tasks);
+            if(response == null)
+            {
+                response = "DummyTask%%No Owner%%"+new Date().getTime();
+            }
+        }
+        return response;
     }
 
     //remove%%Get outside
