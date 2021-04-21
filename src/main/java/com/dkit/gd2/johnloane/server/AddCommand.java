@@ -1,6 +1,6 @@
 package com.dkit.gd2.johnloane.server;
 
-import com.dkit.gd2.johnloane.core.Task;
+import com.dkit.gd2.johnloane.core.TaskDTO;
 import com.dkit.gd2.johnloane.core.TaskDatabase;
 import com.dkit.gd2.johnloane.core.TaskService;
 
@@ -21,8 +21,10 @@ public class AddCommand implements ICommand
                 String taskOwner = components[2];
                 long deadline = Long.parseLong(components[3]);
 
-                Task newTask = new Task(taskName, taskOwner, new Date(deadline));
-                boolean added = taskList.add(newTask);
+                TaskDTO newTask = new TaskDTO(taskName, taskOwner, new Date(deadline));
+                //boolean added = taskList.add(newTask);
+                ITaskDAOInterface taskDAO = new MySqlTaskDAO();
+                boolean added = taskDAO.addTask(newTask);
                 if(added)
                 {
                     response = TaskService.SUCCESSFUL_ADD;
@@ -32,7 +34,7 @@ public class AddCommand implements ICommand
                     response = TaskService.FAILED_ADD;
                 }
             }
-            catch(NumberFormatException e)
+            catch(NumberFormatException | DAOException e)
             {
                 response = TaskService.FAILED_ADD;
                 System.out.println("Could not convert deadline to long " + e.getMessage());

@@ -3,25 +3,25 @@ package com.dkit.gd2.johnloane.core;
 import java.util.Date;
 import java.util.Objects;
 
-public class Task
+public class TaskDTO
 {
     private String taskName;
     private String taskOwner;
     private Date deadline;
 
-    public Task(String taskName, String taskOwner, Date deadline)
+    public TaskDTO(String taskName, String taskOwner, Date deadline)
     {
         this.taskName = taskName;
         this.taskOwner = taskOwner;
         this.deadline = deadline;
     }
 
-    public Task(String taskName, String taskOwner)
+    public TaskDTO(String taskName, String taskOwner)
     {
         this(taskName, taskOwner, null);
     }
 
-    public Task(String taskName)
+    public TaskDTO(String taskName)
     {
         this(taskName, "No one", null);
     }
@@ -46,7 +46,7 @@ public class Task
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
+        TaskDTO task = (TaskDTO) o;
         return Objects.equals(taskName, task.taskName);
     }
     //If two object are equal they must have the same hashcode

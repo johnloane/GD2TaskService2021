@@ -30,7 +30,7 @@ public class TaskService
     //Read masters thesis, John, 999999999999
     //Finish correcting ca5 del one%%John%%8888888888##Read masters thesis%%John%%9999999999
 
-    public static String flattenTaskList(List<Task> taskList)
+    public static String flattenTaskList(List<TaskDTO> taskList)
     {
         if(!taskList.isEmpty())
         {
@@ -49,9 +49,9 @@ public class TaskService
 
     //This is the opposite of the previous method
     //takes input that looks like Finish correcting ca5 del one%%John%%8888888888##Read masters thesis%%John%%9999999999
-    public static List<Task> recreateTaskList(String tasks)
+    public static List<TaskDTO> recreateTaskList(String tasks)
     {
-        List<Task> taskList = new ArrayList<>();
+        List<TaskDTO> taskList = new ArrayList<>();
         //Now taskStrings will contain - Finish correcting ca5 del one%%John%%8888888888 and Read masters thesis%%John%%9999999999
         String[] taskStrings = tasks.split(TaskService.TASK_SEPARATOR);
         for (String task : taskStrings)
@@ -65,7 +65,7 @@ public class TaskService
                 {
                     long deadlineTime = Long.parseLong(components[2]);
                     Date deadline = new Date(deadlineTime);
-                    Task t = new Task(components[0], components[1], deadline);
+                    TaskDTO t = new TaskDTO(components[0], components[1], deadline);
                     taskList.add(t);
                 } catch (NumberFormatException e)
                 {

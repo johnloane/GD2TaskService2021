@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TaskDatabase
 {
-    private List<Task> tasks;
+    private List<TaskDTO> tasks;
 
     public TaskDatabase()
     {
@@ -16,7 +16,7 @@ public class TaskDatabase
     Synchronise access to shared memory - use block level synchronization to
     minimise bottlenecks
      */
-    public boolean add(Task t)
+    public boolean add(TaskDTO t)
     {
         if(!tasks.contains(t))
         {
@@ -29,7 +29,7 @@ public class TaskDatabase
         return false;
     }
 
-    public boolean remove(Task t)
+    public boolean remove(TaskDTO t)
     {
         synchronized (tasks)
         {
@@ -37,12 +37,12 @@ public class TaskDatabase
         }
     }
 
-    public List<Task> getAllTasks()
+    public List<TaskDTO> getAllTasks()
     {
-        List<Task> duplicateList = new ArrayList<>();
+        List<TaskDTO> duplicateList = new ArrayList<>();
         synchronized (tasks)
         {
-            for(Task t : tasks)
+            for(TaskDTO t : tasks)
             {
                 duplicateList.add(t);
             }

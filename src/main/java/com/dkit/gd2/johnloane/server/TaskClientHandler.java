@@ -1,14 +1,11 @@
 package com.dkit.gd2.johnloane.server;
 
-import com.dkit.gd2.johnloane.core.Task;
 import com.dkit.gd2.johnloane.core.TaskDatabase;
 import com.dkit.gd2.johnloane.core.TaskService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class TaskClientHandler implements Runnable
